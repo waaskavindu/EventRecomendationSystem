@@ -9,6 +9,7 @@ from firebase_admin import credentials
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from firebase_admin import db
+from firebase_admin import firestore
 import pandas as pd
 
 cred = credentials.Certificate('konnect-72976-firebase-adminsdk-m1xs2-8e5e7f5ec9.json')
@@ -95,8 +96,23 @@ for x in data:
 final=locationHigh+locationLow
 print(final)
 
+ref0 = db.reference('/0')
 
-# In[ ]:
+user0=ref0.get()
+print(user0)
+updateuser=user0.update({'RData': final})
+print(user0)
+ref0.set(user0)
+print(refUSER.get())
+db2=firestore.client()
+snapshots = list(db2.collection(u'USER').get())
+for snapshot in snapshots:
+    print(snapshot.to_dict())
+db2.collection('USER').document('ACTIVE_USER').set(user0)
+docs = db2.collection(u'USER').stream()
+for doc in docs:
+    print(f'{doc.id}')
+
 
 
 
